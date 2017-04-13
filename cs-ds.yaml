@@ -1,0 +1,41 @@
+---
+kind: DaemonSet
+apiVersion: extensions/v1beta1
+metadata:
+  name: vstorage-cs
+  namespace: vstorage
+  labels:
+    app: vstorage
+    daemon: cs
+spec:
+  template:
+    metadata:
+      labels:
+        app: vstorage
+        daemon: cs
+    spec:
+      nodeSelector:
+        type: cs
+      volumes:
+        - name: repo
+          hostPath:
+            path: /var/lib/vstorage
+      containers:
+        - name: repo
+          image: vstorage:latest
+          imagePullPolicy: IfNotPresent
+          args: ["cs"]
+          volumeMounts:
+            - name: repo
+              mountPath: /var/lib/vstorage
+          securityContext:
+            privileged: true
+          env:
+            - name: CLUSTER_NAME
+              value: stor1
+            - name: VSTORAGE_DIR
+              value: /var/lib/vstorage/cs
+            - name: CLUSTER_PASSWORD
+              value: passw0rd
+            - name: MDS_IP
+              value: 172.17.87.3

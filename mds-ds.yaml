@@ -1,0 +1,55 @@
+---
+kind: DaemonSet
+apiVersion: extensions/v1beta1
+metadata:
+  name: vstorage-mds
+  namespace: vstorage
+  labels:
+    app: vstorage
+    daemon: mds
+spec:
+  template:
+    metadata:
+      labels:
+        app: vstorage
+        daemon: mds
+    spec:
+      nodeSelector:
+        type: mds
+      volumes:
+        - name: repo
+          hostPath:
+            path: /var/lib/vstorage
+      containers:
+        - name: repo
+          image: vstorage:latest
+          imagePullPolicy: IfNotPresent
+          args: ["mds"]
+          volumeMounts:
+            - name: repo
+              mountPath: /var/lib/vstorage
+          ports:
+            - containerPort: 2510
+            - containerPort: 2511
+          securityContext:
+            privileged: true
+          env:
+            - name: CLUSTER_NAME
+              value: stor1
+            - name: VSTORAGE_DIR
+              value: /var/lib/vstorage/mds
+            - name: CLUSTER_PASSWORD
+              value: passw0rd
+            - name: MDS_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          livenessProbe:
+              tcpSocket:
+                port: 2510
+              initialDelaySeconds: 60
+              timeoutSeconds: 5
+          readinessProbe:
+              tcpSocket:
+                port: 2510
+              timeoutSeconds: 5
