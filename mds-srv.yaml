@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mds
+  namespace: vstorage
+spec:
+  selector:
+    app: vstorage
+    daemon: mds
+  ports:
+    - name: mds-2510
+      protocol: TCP
+      port: 2510
+      targetPort: 2510
+    - name: mds-2511
+      protocol: TCP
+      port: 2511
+      targetPort: 2511

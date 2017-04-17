@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vstorage-config
+  namespace: vstorage
+data:
+  cluster.name: stor1
+  cluster.password: passw0rd

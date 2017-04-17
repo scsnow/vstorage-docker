@@ -1,4 +1,0 @@
-CLUSTER_NAME=stor1
-VSTORAGE_DIR=/var/lib/vstorage/mds
-CLUSTER_PASSWORD=passw0rd
-MDS_IP=172.16.50.20

@@ -1,4 +1,4 @@
-FROM vz7-minimal:7.3
+FROM 10.28.29.130:5000/vz7-minimal
 RUN yum install -y vstorage-chunk-server vstorage-metadata-server && \
 yum clean all
 ADD entrypoint.sh /
